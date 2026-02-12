@@ -1,2 +1,2 @@
-# template-repo
-Just a basic template for me.
+# battleship
+A fun approach onto the popular game called Battleships.
