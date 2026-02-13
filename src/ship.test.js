@@ -13,10 +13,46 @@ describe('Ship class', () => {
     });
 
     test('should increase numOfHits multiple times', () => {
-        testShip.hit();
-        testShip.hit();
-        expect(testShip.numOfHits).toBe(2);
+        const shipLength = testShip.length;
+
+        for (let i = 0; i < shipLength; i++) {
+            testShip.hit();
+        }
+
+        expect(testShip.numOfHits).toBe(shipLength);
     });
-    
+
+
+    test('should automatically set sunk to true when hits reach length', () => {
+        const shipLength = testShip.length;
+
+        for (let i = 0; i < shipLength; i++) {
+            testShip.hit();
+        }
+
+        expect(testShip.sunk).toBe(true);
+    });
+
+    test('sunk should be false when hits are smaller than length', () => {
+        const shipLength = testShip.length;
+
+        for (let i = 0; i < shipLength - 1; i++) {
+            testShip.hit();
+        }
+
+        expect(testShip.sunk).toBe(false);
+    });
+
+    test('should stop increasing hits when sunk equals true', () => {
+        const shipLength = testShip.length;
+
+        for (let i = 0; i < shipLength + 1; i++) {
+            testShip.hit();
+        }
+
+        expect(testShip.numOfHits).toBe(shipLength);
+    });
+
+
 });
 

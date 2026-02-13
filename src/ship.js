@@ -6,7 +6,13 @@ export class Ship {
     }
 
     hit() {
+        if (this.sunk) return;
+
         this.numOfHits++;
+
+        if (this.numOfHits >= this.length) {
+            this.sunk = true;
+        }
     }
 
 }
