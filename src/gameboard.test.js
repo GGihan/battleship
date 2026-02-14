@@ -12,4 +12,13 @@ describe('Gameboard class', () => {
         expect(testGameboard.board.length).toBe(testGameboard.size);
         expect(testGameboard.board[0].length).toBe(testGameboard.size);
     });
+
+    test('each cell should be a unique object', () => {
+        testGameboard.createBoard();
+
+        testGameboard.board[0][0].hasShip = true;
+
+        expect(testGameboard.board[0][1].hasShip).toBe(false);
+        expect(testGameboard.board[0][0].hasShip).toBe(true);
+    });
 });

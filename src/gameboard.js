@@ -1,7 +1,7 @@
 export class Gameboard {
     constructor(size) {
         this.size = size;
-        this.shipCount = 0;
+        this.allShips = [];
         this.board = [];
     }
 
@@ -9,7 +9,12 @@ export class Gameboard {
         for (let i = 0; i < this.size; i++) {
             let row = [];
             for (let j = 0; j < this.size; j++) {
-                row.push(0);
+                const cell = {
+                    hasShip: false,
+                    struck: false,
+                    shipID: ""
+                };
+                row.push(cell);
             }
             this.board.push(row);
         }
