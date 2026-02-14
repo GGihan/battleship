@@ -4,7 +4,7 @@ describe('Ship class', () => {
     let testShip;
 
     beforeEach(() => {
-        testShip = new Ship(3);
+        testShip = new Ship(3, "destroyer");
     });
 
     test('should increase numOfHits from 0 to 1', () => {
@@ -53,6 +53,9 @@ describe('Ship class', () => {
         expect(testShip.numOfHits).toBe(shipLength);
     });
 
-
+    test('ship should store its unique ID', () => {
+        expect(testShip.id).toBe('destroyer');
+    });
+    
 });
 
