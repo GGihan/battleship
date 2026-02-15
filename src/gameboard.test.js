@@ -8,14 +8,11 @@ describe('Gameboard class', () => {
     });
 
     test('should create Board with specified size', () => {
-        testGameboard.createBoard();
         expect(testGameboard.board.length).toBe(testGameboard.size);
         expect(testGameboard.board[0].length).toBe(testGameboard.size);
     });
 
     test('each cell should be a unique object', () => {
-        testGameboard.createBoard();
-
         testGameboard.board[0][0].hasShip = true;
 
         expect(testGameboard.board[0][1].hasShip).toBe(false);
@@ -49,7 +46,6 @@ describe('Gameboard class', () => {
     });
 
     test('should not allow overlapping ships', () => {
-        testGameboard.createBoard();
         const ship1 = testGameboard.createShip(3, 'destroyer');
         const ship2 = testGameboard.createShip(2, 'sub');
 

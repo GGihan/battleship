@@ -1,28 +1,23 @@
 import { Ship } from "./ship";
 
 export class Gameboard {
-    constructor(size) {
+    constructor(size = 10) {
         this.size = size;
         this.allShips = [];
         this.placedShips = [];
         this.shipCounter = 0;
         this.typeCounter = {};
-        this.board = [];
+        this.board = this._createBoard(size);
     }
 
-    createBoard() {
-        for (let i = 0; i < this.size; i++) {
-            let row = [];
-            for (let j = 0; j < this.size; j++) {
-                const cell = {
-                    hasShip: false,
-                    struck: false,
-                    placedShipId: ""
-                };
-                row.push(cell);
-            }
-            this.board.push(row);
-        }
+    _createBoard(size) {
+        return Array.from({ length: size }, () =>
+            Array.from({ length: size }, () => ({
+                hasShip: false,
+                struck: false,
+                placedShipId: null
+            }))
+        );
     }
 
     createShip(length, type) {
