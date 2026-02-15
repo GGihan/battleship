@@ -47,4 +47,17 @@ describe('Gameboard class', () => {
 
         expect(testGameboard.shipCounter).toBe(3);
     });
+
+    test('should not allow overlapping ships', () => {
+        testGameboard.createBoard();
+        const ship1 = testGameboard.createShip(3, 'destroyer');
+        const ship2 = testGameboard.createShip(2, 'sub');
+
+        testGameboard.placeShip(ship1.id, 0, 0, false);
+
+        const result = testGameboard.placeShip(ship2.id, 0, 0, true);
+
+        expect(result).toBe(false);
+        expect(testGameboard.board[1][0].hasShip).toBe(false); 
+    });
 });

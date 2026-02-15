@@ -3,6 +3,8 @@ export class Ship {
         this.length = length;
         this.numOfHits = 0;
         this.sunk = false;
+        this.placed = false;
+        this.isVertical = null;
         this.id = id;
     }
 
