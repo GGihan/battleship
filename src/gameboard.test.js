@@ -56,4 +56,45 @@ describe('Gameboard class', () => {
         expect(result).toBe(false);
         expect(testGameboard.board[1][0].hasShip).toBe(false); 
     });
+
+    test('should not allow placing ships out of bounds', () => {
+        const ship = testGameboard.createShip(4, 'battleship');
+        
+        const result = testGameboard.placeShip(ship.id, 8, 0, false);
+
+        expect(result).toBe(false);
+        expect(testGameboard.board[0][8].hasShip).toBe(false);
+    });
+
+    test('should not allow placing the same ship twice', () => {
+        const ship = testGameboard.createShip(2, 'patrol boat');
+        
+        testGameboard.placeShip(ship.id, 0, 0, false);
+        const secondAttempt = testGameboard.placeShip(ship.id, 5, 5, true);
+
+        expect(secondAttempt).toBe(false);
+        expect(testGameboard.board[5][5].hasShip).toBe(false);
+    });
+
+    test('should reject placement if it intersects the middle of another ship', () => {
+        const ship1 = testGameboard.createShip(3, 'cruiser');
+        const ship2 = testGameboard.createShip(3, 'submarine');
+
+        testGameboard.placeShip(ship1.id, 0, 1, false);
+
+        const result = testGameboard.placeShip(ship2.id, 1, 0, true);
+
+        expect(result).toBe(false);
+    });
+
+    test('should allow ships to be placed adjacent to each other', () => {
+        const ship1 = testGameboard.createShip(2, 'submarine');
+        const ship2 = testGameboard.createShip(2, 'destroyer');
+
+        testGameboard.placeShip(ship1.id, 0, 0, false);
+        const result = testGameboard.placeShip(ship2.id, 0, 1, false);
+
+        expect(result).toBe(true);
+        expect(testGameboard.board[1][0].hasShip).toBe(true);
+    });
 });

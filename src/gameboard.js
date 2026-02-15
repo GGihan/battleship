@@ -40,30 +40,22 @@ export class Gameboard {
         const ship = this.allShips.find(s => s.id === targetShipId);
         if (!ship || ship.placed) return false;
 
-        // Scouting for other Ships
-        for (let i = 0; i < ship.length; i++) {
-            
-            const currentX = isVertical ? x : x + i;
-            const currentY = isVertical ? y + i : y;
+        const coordinates = Array.from({ length: ship.length }, (_, i) => ({
+            x: isVertical ? x : x + i,
+            y: isVertical ? y + i : y
+        }));
+        
+        const canPlace = coordinates.every(({ x, y }) => 
+            !this.isOutOfBounds(x, y) && !this.board[y][x].hasShip
+        );
 
-            if (this.isOutOfBounds(currentX, currentY)) {
-                return false;
-            }
+        if (!canPlace) return false;
 
-            // Collision check
-            if (this.board[currentY][currentX].hasShip) {
-                return false;
-            }
-        }
-
-        // Setting board cell values
-        for (let i = 0; i < ship.length; i++) {
-            const currentX = isVertical ? x : x + i;
-            const currentY = isVertical ? y + i : y;
-
-            this.board[currentY][currentX].hasShip = true;
-            this.board[currentY][currentX].placedShipId = ship.id;
-        }
+        coordinates.forEach(({ x, y }) => {
+            const cell = this.board[y][x];
+            cell.hasShip = true;
+            cell.placedShipId = ship.id;
+        });
 
         ship.placed = true;
         ship.isVertical = isVertical;
