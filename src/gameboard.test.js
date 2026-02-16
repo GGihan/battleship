@@ -137,4 +137,13 @@ describe('Gameboard class', () => {
         expect(result.sunk).toBe(true);
         expect(ship.sunk).toBe(true);
     });
+
+     test("checkAllSunk returns true when all placed ships are sunk", () => {
+        const ship1 = testGameboard.createShip(1, "Sub");
+        testGameboard.placeShip(ship1.id, 0, 0, false);
+        
+        testGameboard.receiveAttack(0, 0);
+        
+        expect(testGameboard.checkAllSunk()).toBe(true);
+    });
 });

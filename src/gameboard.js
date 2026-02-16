@@ -87,4 +87,9 @@ export class Gameboard {
         this.missedAttacks.push({ x, y });
         return { hit: false };
     }
+
+    checkAllSunk() {
+        if (this.placedShips.length === 0) return false;
+        return this.placedShips.every(ship => ship.sunk);
+    }
 }
