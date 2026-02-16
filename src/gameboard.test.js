@@ -97,4 +97,44 @@ describe('Gameboard class', () => {
         expect(result).toBe(true);
         expect(testGameboard.board[1][0].hasShip).toBe(true);
     });
+
+    test("should return 'Invalid coordinates' if attack is out of bounds", () => {
+        expect(testGameboard.receiveAttack(-1, 5)).toBe("Invalid coordinates");
+        expect(testGameboard.receiveAttack(10, 10)).toBe("Invalid coordinates");
+    });
+
+    test("should record a miss and update missedAttacks array", () => {
+        const result = testGameboard.receiveAttack(2, 3);
+        
+        expect(result).toEqual({ hit: false });
+        expect(testGameboard.board[3][2].struck).toBe(true);
+        expect(testGameboard.missedAttacks).toContainEqual({ x: 2, y: 3 });
+    });
+
+    test("should return 'Cell already attacked' if hitting the same spot twice", () => {
+        testGameboard.receiveAttack(1, 1);
+        expect(testGameboard.receiveAttack(1, 1)).toBe("Cell already attacked");
+    });
+
+    test("should successfully hit a placed ship", () => {
+        const ship = testGameboard.createShip(2, "Destroyer");
+        testGameboard.placeShip(ship.id, 0, 0, false);
+
+        const result = testGameboard.receiveAttack(0, 0);
+
+        expect(result.hit).toBe(true);
+        expect(result.shipId).toBe(ship.id);
+        expect(ship.numOfHits).toBe(1);
+    });
+
+    test("should report when a ship is sunk", () => {
+        const ship = testGameboard.createShip(1, "Submarine");
+        testGameboard.placeShip(ship.id, 5, 5, false);
+
+        const result = testGameboard.receiveAttack(5, 5);
+
+        expect(result.hit).toBe(true);
+        expect(result.sunk).toBe(true);
+        expect(ship.sunk).toBe(true);
+    });
 });

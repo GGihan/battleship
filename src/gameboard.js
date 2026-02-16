@@ -7,6 +7,7 @@ export class Gameboard {
         this.placedShips = [];
         this.shipCounter = 0;
         this.typeCounter = {};
+        this.missedAttacks = [];
         this.board = this._createBoard(size);
     }
 
@@ -66,5 +67,24 @@ export class Gameboard {
 
     isOutOfBounds(x, y) {
         return x < 0 || x >= this.size || y < 0 || y >= this.size;
+    }
+
+    receiveAttack(x, y) {
+        if (this.isOutOfBounds(x, y)) return "Invalid coordinates";
+
+        const cell = this.board[y][x];
+        if (cell.struck) return "Cell already attacked";
+
+        cell.struck = true;
+
+        if (cell.hasShip) {
+            const ship = this.allShips.find(s => s.id === cell.placedShipId);
+
+            ship.hit();
+            return { hit: true, sunk: ship.sunk, shipId: ship.id };
+        }
+
+        this.missedAttacks.push({ x, y });
+        return { hit: false };
     }
 }
