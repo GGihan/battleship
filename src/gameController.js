@@ -37,12 +37,28 @@ export class GameController {
         const humanResult = this.processAttack(this.player1, this.computer, x, y);
         if (!humanResult) return; 
 
-        if (this.checkWin(this.computer)) return "Player Wins!";
+        if (this.checkWin(this.computer)) {
+            return { 
+                winner: "Player", 
+                humanResult 
+            };
+        }
 
         await this.delay(500); 
-        this.processComputerTurn();
+        const computerResult = this.processComputerTurn();
 
-        if (this.checkWin(this.player1)) return "Computer Wins!";
+        if (this.checkWin(this.player1)) {
+            return { 
+                winner: "Computer", 
+                humanResult, 
+                computerResult 
+            };
+        }
+
+        return { 
+            humanResult, 
+            computerResult 
+        };
     }
 
     processAttack(attacker, defender, x, y) {
