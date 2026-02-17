@@ -9,6 +9,22 @@ export class Player {
     attack(x, y, enemyBoard) {
         return enemyBoard.receiveAttack(x, y);
     }
+
+    autoPlaceShips() {
+        const shipsToPlace = this.gameboard.allShips;
+
+        shipsToPlace.forEach(ship => {
+            let placed = false;
+            
+            while (!placed) {
+                const x = Math.floor(Math.random() * this.gameboard.size);
+                const y = Math.floor(Math.random() * this.gameboard.size);
+                const isVertical = Math.random() < 0.5;
+
+                placed = this.gameboard.placeShip(ship.id, x, y, isVertical);
+            }
+        });
+    }
 }
 
 export class ComputerPlayer extends Player {
