@@ -32,29 +32,37 @@ export const DisplayController = (game) => {
     };
 
     const handleAttack = async (x, y) => {
-        
         const result = await game.handleTurn(x, y);
         
-        if (!result) return;
-
-        updateCell(computerBoardElement, x, y, result.humanResult);
-        
-        if (result.computerResult) {
-            updateCell(playerBoardElement, result.computerResult.x, result.computerResult.y, result.computerResult);
+        if (result) {
+            updateBoardUI(computerBoardElement, game.computer);
+            updateBoardUI(playerBoardElement, game.player1);
         }
 
-        if (result.winner) {
-            alert(`${result.winner} wins!`);
+        if (game.isGameOver) {
+            alert(`Game Over! Winner: ${game.activePlayer.playerName}`);
         }
     };
 
-    const updateCell = (container, x, y, attackResult) => {
-        const cell = container.querySelector(`[data-x="${x}"][data-y="${y}"]`);
-        cell.classList.add(attackResult.hit ? "hit" : "miss");
+    const updateBoardUI = (container, player) => {
+        const boardData = player.gameboard.board;
         
-        if (attackResult.sunk) {
-            cell.classList.add("sunk");
-        }
+        boardData.forEach((row, y) => {
+            row.forEach((cellData, x) => {
+                const cellDiv = container.querySelector(`[data-x="${x}"][data-y="${y}"]`);
+                
+                if (cellData.struck) {
+                    cellDiv.classList.add(cellData.hasShip ? "hit" : "miss");
+                }
+
+                if (cellData.hasShip) {
+                    const ship = player.gameboard.placedShips.find(s => s.id === cellData.placedShipId);
+                    if (ship && ship.sunk) {
+                        cellDiv.classList.add("sunk");
+                    }
+                }
+            });
+        });
     };
 
     return { renderBoards };
