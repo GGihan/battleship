@@ -44,7 +44,7 @@ export class GameController {
             };
         }
 
-        await this.delay(500); 
+        await this.delay(200); 
         const computerResult = this.processComputerTurn();
 
         if (this.checkWin(this.player1)) {

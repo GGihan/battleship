@@ -1,3 +1,8 @@
 import "./styles.css";
+import { GameController } from "./gameController";
+import { DisplayController } from "./ui";
 
-console.log('Hello from index.js!');
+const game = new GameController();
+const ui = DisplayController(game);
+
+ui.renderBoards();
