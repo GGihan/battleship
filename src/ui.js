@@ -39,8 +39,8 @@ export const DisplayController = (game) => {
             updateBoardUI(playerBoardElement, game.player1);
         }
 
-        if (game.isGameOver) {
-            alert(`Game Over! Winner: ${game.activePlayer.playerName}`);
+        if (result && result.winner) {
+            alert(`Game Over! Winner: ${result.winner}`);
         }
     };
 

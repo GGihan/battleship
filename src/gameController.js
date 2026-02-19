@@ -38,21 +38,14 @@ export class GameController {
         if (!humanResult) return; 
 
         if (this.checkWin(this.computer)) {
-            return { 
-                winner: "Player", 
-                humanResult 
-            };
+            return { winner: this.player1.playerName, humanResult };
         }
 
         await this.delay(200); 
         const computerResult = this.processComputerTurn();
 
         if (this.checkWin(this.player1)) {
-            return { 
-                winner: "Computer", 
-                humanResult, 
-                computerResult 
-            };
+            return { winner: "Computer", humanResult, computerResult };
         }
 
         return { 
