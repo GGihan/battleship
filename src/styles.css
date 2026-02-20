@@ -1,5 +1,5 @@
 body {
-    background-color: #f0f0f0;
+    background-color: rgb(175, 174, 174);
     font-family: sans-serif;
     display: flex;
     flex-direction: column;
@@ -23,7 +23,8 @@ body {
     grid-template-columns: repeat(10, 50px);
     grid-template-rows: repeat(10, 50px);
     gap: 2px;
-    border: 2px solid #333;
+    border: 4px solid #333;
+    border-radius: 5px;
     background-color: #444;
 }
 
@@ -37,3 +38,16 @@ body {
 .cell.hit { background-color: red; }
 .cell.miss { background-color: white; }
 .cell.sunk { background-color: darkred; }
+
+#game-controls {
+    display: flex;
+    gap: 15px;
+}
+
+button {
+    width: 150px;
+    height: 30px;
+    border-radius: 5px;
+    outline: 2px solid black;
+    font-size: 20px;
+}

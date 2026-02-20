@@ -1,10 +1,14 @@
-export const DisplayController = (game) => {
+import { GameController } from "./gameController";
+
+export const DisplayController = (initialGame) => {
+    let currentGame = initialGame;
     const playerBoardElement = document.getElementById("player-board");
     const computerBoardElement = document.getElementById("computer-board");
+    const resetGameButton = document.getElementById("game-reset");
 
     const renderBoards = () => {
-        _drawGrid(playerBoardElement, game.player1, "player");
-        _drawGrid(computerBoardElement, game.computer, "computer");
+        _drawGrid(playerBoardElement, currentGame.player1, "player");
+        _drawGrid(computerBoardElement, currentGame.computer, "computer");
     };
 
     const _drawGrid = (container, player, type) => {
@@ -32,11 +36,11 @@ export const DisplayController = (game) => {
     };
 
     const handleAttack = async (x, y) => {
-        const result = await game.handleTurn(x, y);
+        const result = await currentGame.handleTurn(x, y);
         
         if (result) {
-            updateBoardUI(computerBoardElement, game.computer);
-            updateBoardUI(playerBoardElement, game.player1);
+            updateBoardUI(computerBoardElement, currentGame.computer);
+            updateBoardUI(playerBoardElement, currentGame.player1);
         }
 
         if (result && result.winner) {
@@ -64,6 +68,12 @@ export const DisplayController = (game) => {
             });
         });
     };
+
+    resetGameButton.addEventListener('click', () => {
+        const newGame = new GameController();
+        currentGame = newGame;
+        renderBoards();
+    });
 
     return { renderBoards };
 };
