@@ -21,6 +21,14 @@ export class Gameboard {
         );
     }
 
+     resetBoard() {
+        this.board = this._createBoard(this.size);
+        this.placedShips = [];
+        this.allShips.forEach(ship => {
+            ship.placed = false;
+        });
+    }
+
     createShip(length, type) {
         if (this.typeCounter[type] === undefined) {
             this.typeCounter[type] = 0;

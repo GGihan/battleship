@@ -6,6 +6,7 @@ export const DisplayController = (initialGame) => {
     const computerBoardElement = document.getElementById("computer-board");
     const resetGameButton = document.getElementById("game-reset");
     const startGameButton = document.getElementById("game-start");
+    const randomizeGameButton = document.getElementById("randomize-ship");
 
     const renderBoards = () => {
         _drawGrid(playerBoardElement, currentGame.player1, "player");
@@ -103,6 +104,14 @@ export const DisplayController = (initialGame) => {
         } else {
             alert("You still have ships in storage!");
         }
+    });
+
+    randomizeGameButton.addEventListener('click', () => {
+        if (currentGame.gameStarted) return;
+        currentGame.player1.gameboard.resetBoard()
+        currentGame.player1.autoPlaceShips();
+        renderBoards();
+        renderStorageBoard(currentGame.player1);
     });
 
     const renderStorageBoard = (player) => {
