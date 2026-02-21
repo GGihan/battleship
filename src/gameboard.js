@@ -21,7 +21,7 @@ export class Gameboard {
         );
     }
 
-     resetBoard() {
+    resetBoard() {
         this.board = this._createBoard(this.size);
         this.placedShips = [];
         this.allShips.forEach(ship => {

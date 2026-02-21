@@ -2,11 +2,14 @@ import { GameController } from "./gameController";
 
 export const DisplayController = (initialGame) => {
     let currentGame = initialGame;
+    let isVertical = false;
     const playerBoardElement = document.getElementById("player-board");
     const computerBoardElement = document.getElementById("computer-board");
+    const storageBoard = document.getElementById("storage-board");
     const resetGameButton = document.getElementById("game-reset");
     const startGameButton = document.getElementById("game-start");
     const randomizeGameButton = document.getElementById("randomize-ship");
+    const rotateButton = document.getElementById("rotate-button");
 
     const renderBoards = () => {
         _drawGrid(playerBoardElement, currentGame.player1, "player");
@@ -33,7 +36,7 @@ export const DisplayController = (initialGame) => {
                         e.preventDefault();
                         const shipId = e.dataTransfer.getData("text/plain");
                         
-                        const success = player.gameboard.placeShip(shipId, x, y, false);
+                        const success = player.gameboard.placeShip(shipId, x, y, isVertical);
 
                         if (success) {
                             renderBoards(); 
@@ -114,6 +117,12 @@ export const DisplayController = (initialGame) => {
         renderStorageBoard(currentGame.player1);
     });
 
+    rotateButton.addEventListener("click", () => {
+        isVertical = !isVertical;
+        rotateButton.textContent = `Rotate Ship: ${isVertical ? "Vertical" : "Horizontal"}`;
+        storageBoard.classList.toggle("vertical-layout", isVertical);
+    });
+
     const renderStorageBoard = (player) => {
         const storageContainer = document.getElementById("storage-board");
         storageContainer.innerHTML = "";
@@ -130,6 +139,9 @@ export const DisplayController = (initialGame) => {
                 if (shipAtRow && x < shipAtRow.length) {
                     cell.classList.add("ship");
                     cell.dataset.shipId = shipAtRow.id
+
+                    if (x === 0) cell.classList.add("ship-head");
+                    if (x === shipAtRow.length - 1) cell.classList.add("ship-tail");
 
                     cell.setAttribute("draggable", "true");
 
