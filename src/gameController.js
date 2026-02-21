@@ -14,6 +14,7 @@ export class GameController {
         this.computer = new ComputerPlayer();
         this.activePlayer = this.player1;
         this.isGameOver = false;
+        this.gameStarted = false;
         this.setupInitialShips();
         this.beginGameSetup();
     }
@@ -27,11 +28,24 @@ export class GameController {
     }
 
     beginGameSetup() {
-        this.player1.autoPlaceShips();
+        // this.player1.autoPlaceShips();
         this.computer.autoPlaceShips();
     }
 
+    startGame() {
+        if (this.player1.gameboard.placedShips.length === 5) {
+            this.gameStarted = true;
+            return true;
+        }
+        return false;
+    }
+
     async handleTurn(x, y) {
+        if (!this.gameStarted) {
+            alert("Place all your ships and click Start first!");
+            return;
+        }
+        
         if (this.isGameOver) return;
 
         const humanResult = this.processAttack(this.player1, this.computer, x, y);

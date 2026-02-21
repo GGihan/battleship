@@ -5,6 +5,7 @@ export const DisplayController = (initialGame) => {
     const playerBoardElement = document.getElementById("player-board");
     const computerBoardElement = document.getElementById("computer-board");
     const resetGameButton = document.getElementById("game-reset");
+    const startGameButton = document.getElementById("game-start");
 
     const renderBoards = () => {
         _drawGrid(playerBoardElement, currentGame.player1, "player");
@@ -21,6 +22,24 @@ export const DisplayController = (initialGame) => {
                 cellDiv.classList.add("cell");
                 cellDiv.dataset.x = x;
                 cellDiv.dataset.y = y;
+
+                if (type === "player") {
+                    cellDiv.addEventListener("dragover", (e) => {
+                        e.preventDefault();
+                    });
+
+                    cellDiv.addEventListener("drop", (e) => {
+                        e.preventDefault();
+                        const shipId = e.dataTransfer.getData("text/plain");
+                        
+                        const success = player.gameboard.placeShip(shipId, x, y, false);
+
+                        if (success) {
+                            renderBoards(); 
+                            renderStorageBoard(player);
+                        }
+                    });
+                }
 
                 if (type === "player" && cell.hasShip) {
                     cellDiv.classList.add("ship");
@@ -73,7 +92,47 @@ export const DisplayController = (initialGame) => {
         const newGame = new GameController();
         currentGame = newGame;
         renderBoards();
+        renderStorageBoard(currentGame.player1);
     });
 
-    return { renderBoards };
+    startGameButton.addEventListener('click', () => {
+        if (currentGame.gameStarted) return;
+        const success = currentGame.startGame();
+        if (success) {
+            alert("Battle Stations! Your turn.");
+        } else {
+            alert("You still have ships in storage!");
+        }
+    });
+
+    const renderStorageBoard = (player) => {
+        const storageContainer = document.getElementById("storage-board");
+        storageContainer.innerHTML = "";
+        const unplacedShips = player.gameboard.allShips.filter(ship => !ship.placed);
+        for (let y = 0; y < 5; y++) {
+            for (let x = 0; x < 5; x++) {
+                const cell = document.createElement("div");
+                cell.classList.add("cell");
+                cell.dataset.storageX = x;
+                cell.dataset.storageY = y;
+
+                const shipAtRow = unplacedShips[y];
+
+                if (shipAtRow && x < shipAtRow.length) {
+                    cell.classList.add("ship");
+                    cell.dataset.shipId = shipAtRow.id
+
+                    cell.setAttribute("draggable", "true");
+
+                    cell.addEventListener("dragstart", (e) => {
+                        e.dataTransfer.setData("text/plain", shipAtRow.id);
+                    });
+                }
+
+                storageContainer.appendChild(cell);
+            }
+        }
+    }
+
+    return { renderBoards, renderStorageBoard };
 };

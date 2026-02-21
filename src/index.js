@@ -6,6 +6,7 @@ function initGame() {
     const game = new GameController();
     const ui = DisplayController(game);
     ui.renderBoards();
+    ui.renderStorageBoard(game.player1);
 }
 
 initGame();
